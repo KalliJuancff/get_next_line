@@ -19,7 +19,7 @@ $(NAME) : $(OBJ_FILES)
 -include $(DEP_FILES)
 
 
-.PHONY: all clean fclean re run info help
+.PHONY: all clean fclean re norm run info help
 
 all : $(NAME)
 
@@ -31,6 +31,9 @@ fclean : clean
 	$(RM) $(NAME)
 
 re : fclean all
+
+norm :
+	norminette $(SRC_FILES)
 
 run : fclean all $(NAME)
 	@echo "\n"
