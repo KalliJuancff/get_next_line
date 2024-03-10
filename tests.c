@@ -1,7 +1,4 @@
 #include <fcntl.h>		// open, O_RDONLY
-#include <stdio.h>		// printf
-#include <stdlib.h>		// NULL
-#include <unistd.h>		// close
 #include "assertions.h"
 #include "get_next_line.h"
 
