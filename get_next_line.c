@@ -6,46 +6,11 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/10 15:03:08 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:17:54 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
-
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
-#endif
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*result;
-	size_t	len;
-	size_t	i;
-
-	len = ft_strlen(s1);
-	result = malloc(len + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		result[i] = s1[i];
-		i++;
-	}
-	result[i] = '\0';
-	return (result);
-}
+#include "get_next_line.h"
 
 char	*get_next_line(int fd)
 {
