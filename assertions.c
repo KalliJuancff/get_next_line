@@ -1,6 +1,3 @@
-#include <stdio.h>		// printf
-#include <stdlib.h>		// NULL
-#include <string.h>		// strcmp
 #include "assertions.h"
 
 void assertEqualString(char *s1, char *s2)
