@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/09 14:43:16 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/10 15:03:08 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <unistd.h>
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 4
+# define BUFFER_SIZE 5
 #endif
 
 size_t	ft_strlen(const char *s)
@@ -54,11 +54,11 @@ char	*get_next_line(int fd)
 	static char	*last_line;
 
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
-	buffer[BUFFER_SIZE] = '\0';
 	if (last_line != NULL)
 		free(last_line);
 	if (bytes_read == 0 || bytes_read == -1)
 		return (NULL);
+	buffer[bytes_read] = '\0';
 	last_line = ft_strdup(buffer);
 	return (last_line);
 }
