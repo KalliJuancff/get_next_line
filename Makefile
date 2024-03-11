@@ -1,5 +1,6 @@
 NAME      := get_next_line.out
-SRC_FILES := get_next_line.c
+SRC_FILES := get_next_line.c \
+	     get_next_line_utils.c
 OBJ_FILES := $(patsubst %.c,%.o,$(SRC_FILES))
 DEP_FILES := $(patsubst %.c,%.d,$(SRC_FILES))
 
