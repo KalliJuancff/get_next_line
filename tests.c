@@ -6,7 +6,7 @@ void test1()
 {
 	int fd = open("1.txt", O_RDONLY);
 
-	assertEqualString(get_next_line(fd), "123");
+	assertEqualString(get_next_line(fd), "12345");
 	assertEqualString(get_next_line(fd), NULL);
 
 	close(fd);
