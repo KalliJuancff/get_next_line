@@ -10,6 +10,7 @@
 #define ERRONEO(text) "\033[31m" text CODIGO_ESCAPE_RESET
 #define TITULO(text) "\033[1;37m" text CODIGO_ESCAPE_RESET
 
+char *duplicar_cadena_sin_intros(char *cadena);
 void assertEqualString(char *s1, char *s2);
 
 #endif
