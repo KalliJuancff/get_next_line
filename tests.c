@@ -68,6 +68,15 @@ void test4()
 	assertEqualString(get_next_line(STDIN_FILENO), NULL);
 }
 
+void test5()
+{
+	simular_escritura_desde_teclado("12\n45");
+
+	assertEqualString(get_next_line(STDIN_FILENO), "12\n");
+	assertEqualString(get_next_line(STDIN_FILENO), "45");
+	assertEqualString(get_next_line(STDIN_FILENO), NULL);
+}
+
 int main()
 {
 	printf("TEST1:\n");
@@ -81,6 +90,9 @@ int main()
 
 	printf("TEST4:\n");
 	test4();
+
+	printf("TEST5:\n");
+	test5();
 
 	return (0);
 }
