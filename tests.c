@@ -95,10 +95,10 @@ int main()
 	printf(TITULO("TEST4:")"\n");
 	test4();
 
-/*
 	printf(TITULO("TEST5:")"\n");
 	test5();
 
+/*
 	printf(TITULO("TEST6:")"\n");
 	test6();
 */
