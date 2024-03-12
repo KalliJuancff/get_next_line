@@ -52,6 +52,13 @@ Mkfile.old
 dkms.conf
 
 
-# Añadidos por JC
+###################
+# Añadidos por JC #
+###################
+
+# Fichero oculto creado por Finder que almacena metadatos sobre la carpeta
 .DS_Store
+
+# Ficheros temporales de Vim
+*.swp
 
