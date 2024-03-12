@@ -6,11 +6,54 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:25 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/12 16:14:46 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/12 18:58:40 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+char	*ft_strchr(const char *s, int c)
+{
+	char	ch;
+
+	ch = (char) c;
+	while (*s != ch)
+	{
+		if (*s == '\0')
+			return (0);
+		s++;
+	}
+	return ((char *) s);
+}
+
+
+void	*ft_bzero(void *s, size_t n)
+{
+	unsigned char	*p;
+
+	p = (unsigned char *)s;
+	while (n > 0)
+	{
+		*p = 0;
+		p++;
+		n--;
+	}
+	return (s);
+}
+
+void	*ft_calloc(size_t count, size_t size)
+{
+	unsigned char	*result;
+	size_t			num_bytes;
+
+	num_bytes = count * size;
+	result = malloc(num_bytes);
+	if (!result)
+		return (NULL);
+	ft_bzero(result, num_bytes);
+	return (result);
+}
+
 
 size_t	ft_strlen(const char *s)
 {
@@ -41,6 +84,7 @@ char	*ft_strdup(const char *s1)
 	result[i] = '\0';
 	return (result);
 }
+
 
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
