@@ -79,19 +79,19 @@ void test5()
 
 int main()
 {
-	printf("TEST1:\n");
+	printf(TITULO("TEST1:")"\n");
 	test1();
 
-	printf("TEST2:\n");
+	printf(TITULO("TEST2:")"\n");
 	test2();
 
-	printf("TEST3:\n");
+	printf(TITULO("TEST3:")"\n");
 	test3();
 
-	printf("TEST4:\n");
+	printf(TITULO("TEST4:")"\n");
 	test4();
 
-	printf("TEST5:\n");
+	printf(TITULO("TEST5:")"\n");
 	test5();
 
 	return (0);

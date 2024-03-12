@@ -4,8 +4,11 @@
 #include <stdio.h>		// printf, NULL
 #include <string.h>		// strcmp, NULL
 
-#define SUCCESS(text) "\033[32m" text "\033[0m"
-#define FAIL(text) "\033[31m" text "\033[0m"
+#define CODIGO_ESCAPE_RESET "\033[0m"
+
+#define CORRECTO(text) "\033[32m" text CODIGO_ESCAPE_RESET
+#define ERRONEO(text) "\033[31m" text CODIGO_ESCAPE_RESET
+#define TITULO(text) "\033[1;37m" text CODIGO_ESCAPE_RESET
 
 void assertEqualString(char *s1, char *s2);
 

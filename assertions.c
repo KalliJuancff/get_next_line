@@ -44,9 +44,9 @@ void assertEqualString(char *s1, char *s2)
 	dup_s2 = duplicar_cadena_sin_intros(s2);
 
 	if (error)
-		printf("%s: Las cadenas '%s' y '%s' *NO* son iguales.\n", FAIL("KO"), dup_s1, dup_s2);
+		printf("%s: Las cadenas '%s' y '%s' *NO* son iguales.\n", ERRONEO("KO"), dup_s1, dup_s2);
 	else
-		printf("%s: Las cadenas '%s' y '%s' son iguales.\n", SUCCESS("OK"), dup_s1, dup_s2);
+		printf("%s: Las cadenas '%s' y '%s' son iguales.\n", CORRECTO("OK"), dup_s1, dup_s2);
 
 	if (dup_s1 != NULL)
 		free(dup_s1);
