@@ -26,30 +26,30 @@ char *duplicar_cadena_sin_intros(char *cadena)
 	return (result);
 }
 
-void assertEqualString(char *s1, char *s2)
+void assertEqualString(char *actual, char *esperada)
 {
 	int error = 0;
-	char *dup_s1, *dup_s2;
+	char *dup_actual, *dup_esperada;
 
-	if (s1 == NULL && s2 != NULL)
+	if (actual == NULL && esperada != NULL)
 		error = 1;
-	else if (s1 != NULL && s2 == NULL)
+	else if (actual != NULL && esperada == NULL)
 		error = 1;
-	else if (s1 == NULL && s2 == NULL)
+	else if (actual == NULL && esperada == NULL)
 		error = 0;
-	else if (strcmp(s1, s2) != 0)
+	else if (strcmp(actual, esperada) != 0)
 		error = 1;
 
-	dup_s1 = duplicar_cadena_sin_intros(s1);
-	dup_s2 = duplicar_cadena_sin_intros(s2);
+	dup_actual = duplicar_cadena_sin_intros(actual);
+	dup_esperada = duplicar_cadena_sin_intros(esperada);
 
 	if (error)
-		printf("%s: Las cadenas '%s' y '%s' *NO* son iguales.\n", ERRONEO("KO"), dup_s1, dup_s2);
+		printf("%s: Se encontró el valor '%s', pero se esperaba '%s'.\n", ERRONEO("KO"), dup_actual, dup_esperada);
 	else
-		printf("%s: Las cadenas '%s' y '%s' son iguales.\n", CORRECTO("OK"), dup_s1, dup_s2);
+		printf("%s: Se encontró el valor esperado '%s'.\n", CORRECTO("OK"), dup_esperada);
 
-	if (dup_s1 != NULL)
-		free(dup_s1);
-	if (dup_s2 != NULL)
-		free(dup_s2);
+	if (dup_actual != NULL)
+		free(dup_actual);
+	if (dup_esperada != NULL)
+		free(dup_esperada);
 }
