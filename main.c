@@ -35,6 +35,7 @@ int main(int argc, char **argv)
 	{
 		printf("Línea %d: '%s'\n", num_lineas + 1, next_line);
 		num_lineas++;
+		free(next_line);
 	}
 	printf("%d líneas procesadas.\n", num_lineas);
 
