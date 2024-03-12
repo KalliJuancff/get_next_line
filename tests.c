@@ -42,13 +42,30 @@ void test1()
 
 void test2()
 {
-	// int fd = open("2.txt", O_RDONLY);
 	simular_escritura_desde_teclado("123");
 
 	assertEqualString(get_next_line(STDIN_FILENO), "123");
 	assertEqualString(get_next_line(STDIN_FILENO), NULL);
+}
 
-	// close(fd);
+void test3()
+{
+	simular_escritura_desde_teclado("1234567890DIEVE");
+
+	assertEqualString(get_next_line(STDIN_FILENO), "12345");
+	assertEqualString(get_next_line(STDIN_FILENO), "67890");
+	assertEqualString(get_next_line(STDIN_FILENO), "DIEVE");
+	assertEqualString(get_next_line(STDIN_FILENO), NULL);
+}
+
+void test4()
+{
+	simular_escritura_desde_teclado("1234567890DIO");
+
+	assertEqualString(get_next_line(STDIN_FILENO), "12345");
+	assertEqualString(get_next_line(STDIN_FILENO), "67890");
+	assertEqualString(get_next_line(STDIN_FILENO), "DIO");
+	assertEqualString(get_next_line(STDIN_FILENO), NULL);
 }
 
 int main()
@@ -58,6 +75,12 @@ int main()
 
 	printf("TEST2:\n");
 	test2();
+
+	printf("TEST3:\n");
+	test3();
+
+	printf("TEST4:\n");
+	test4();
 
 	return (0);
 }
