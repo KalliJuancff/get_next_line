@@ -1,29 +1,39 @@
 #include "get_next_line.h"
 #include "assertions.h"
 
-void reemplazarIntros(char *s)
-{
-	if (s == NULL)
-		return;
-
-	while (*s != '\0')
-	{
-		if (*s == '\n')
-			*s = '$';
-		s++;
-	}
-}
-
 char *duplicar_cadena_sin_intros(char *cadena)
 {
-	char *result;
-
 	if (cadena == NULL)
-		return (NULL);
+		return (ft_strdup("NULL"));
 
-	result = ft_strdup(cadena);
-	reemplazarIntros(result);
-	return (result);
+	int i = 0;
+	int num_intros = 0;
+	while (cadena[i] != '\0')
+	{
+		if (*cadena == '\n')
+			num_intros++;
+		i++;
+	}
+
+	char *retorno;
+	i = 0;
+	retorno = malloc(ft_strlen(cadena) + num_intros + 1 * sizeof(char));
+	while (*cadena)
+	{
+		if (*cadena == '\n')
+		{
+			retorno[i] = '\\';
+			i++;
+			retorno[i] = 'n';
+		}
+		else
+			retorno[i] = *cadena;
+
+		cadena++;
+		i++;
+	}
+	retorno[i] = '\0';
+	return (retorno);
 }
 
 void assertEqualString(char *actual, char *esperada)
@@ -48,8 +58,6 @@ void assertEqualString(char *actual, char *esperada)
 	else
 		printf("%s: Se encontró el valor esperado '%s'.\n", CORRECTO("OK"), dup_esperada);
 
-	if (dup_actual != NULL)
-		free(dup_actual);
-	if (dup_esperada != NULL)
-		free(dup_esperada);
+	free(dup_actual);
+	free(dup_esperada);
 }
