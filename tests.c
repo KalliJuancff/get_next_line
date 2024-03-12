@@ -26,6 +26,13 @@ void simular_escritura_desde_teclado(char *texto)
 
 	// Cerramos el extremo de escritura del pipe, ya que no lo necesitamos
 	close(pipefd[1]);
+
+	// Mostramos el texto que simulamos que se escribe desde el teclado
+	char *dup_texto;
+	dup_texto = duplicar_cadena_sin_intros(texto);
+	printf(TITULO("Contenido fichero: "));
+	printf("'%s'\n", dup_texto);
+	free (dup_texto);
 }
 
 void test1()
