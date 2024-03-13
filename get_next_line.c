@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/13 11:42:28 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:16:03 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@ char	*get_next_line(int fd)
 	bytes_read = read(fd, buffer, BUFFER_SIZE);
 	if (bytes_read <= 0)
 		return (NULL);
-	buffer[BUFFER_SIZE] = '\0';
+	buffer[bytes_read] = '\0';
 	return (ft_strdup(buffer));
 }
