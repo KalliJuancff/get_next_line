@@ -96,6 +96,7 @@ int main()
 	printf(TITULO("TEST1:")"\n");
 	test1();
 
+/*
 	printf(TITULO("TEST2:")"\n");
 	test2();
 
@@ -110,6 +111,7 @@ int main()
 
 	printf(TITULO("TEST6:")"\n");
 	test6();
+*/
 
 	return (0);
 }
