@@ -9,7 +9,7 @@ void simular_escritura_desde_teclado(char *texto)
 	// Creamos un pipe
 	if (pipe(pipefd) == -1)
 	{
-		perror("Error al ejecutar el comando 'pipe'.\n");
+		perror("Error al ejecutar la función 'pipe'.\n");
 		exit (-1);
 	}
 
@@ -24,14 +24,14 @@ void simular_escritura_desde_teclado(char *texto)
 		exit (-1);
 	}
 
-	// Cerramos el extremo de escritura del pipe, ya que no lo necesitamos
+	// Cerramos el extremo de escritura del pipe ya que no lo necesitamos
 	close(pipefd[1]);
 
 	// Mostramos el texto que simulamos que se escribe desde el teclado
 	char *dup_texto;
 	dup_texto = duplicar_cadena_sin_intros(texto);
 	printf(TITULO("Contenido fichero: "));
-	printf("'%s'\n", dup_texto);
+	printf("%s\n", dup_texto);
 	free (dup_texto);
 }
 
@@ -41,6 +41,9 @@ void test1()
 	//     int fd = open("1.txt", O_RDONLY);
 	simular_escritura_desde_teclado("12345");
 
+	// NOTA:
+	// Teóricamente, tendría que acabar llamando a la función 'free' para cada una de las líneas válidas obtenidas,
+	// pero no lo hago y 'leaks' tampoco se queja...
 	assertEqualString(get_next_line(STDIN_FILENO), "12345");
 	assertEqualString(get_next_line(STDIN_FILENO), NULL);
 

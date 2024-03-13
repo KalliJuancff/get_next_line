@@ -17,7 +17,7 @@ int main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		printf("Debe especificar un archivo a abrir.\n");
+		printf("Debe especificar un archivo de texto a abrir.\n");
 		return (-1);
 	}
 

@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:25 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/12 18:58:40 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/13 10:36:30 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	*ft_bzero(void *s, size_t n)
 {
 	unsigned char	*p;
 
-	p = (unsigned char *)s;
+	p = (unsigned char *) s;
 	while (n > 0)
 	{
 		*p = 0;
@@ -48,7 +48,7 @@ void	*ft_calloc(size_t count, size_t size)
 
 	num_bytes = count * size;
 	result = malloc(num_bytes);
-	if (!result)
+	if (result == NULL)
 		return (NULL);
 	ft_bzero(result, num_bytes);
 	return (result);
