@@ -81,8 +81,12 @@ void test4()
 {
 	simular_escritura_desde_teclado("1234567890123");
 
-	assertEqualString(get_next_line(STDIN_FILENO), "1234567890123");
-	assertEqualString(get_next_line(STDIN_FILENO), NULL);
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567890123");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
 }
 
 void test5()
@@ -114,10 +118,10 @@ int main()
 	printf(TITULO("TEST3:")"\n");
 	test3();
 
-/*
 	printf(TITULO("TEST4:")"\n");
 	test4();
 
+/*
 	printf(TITULO("TEST5:")"\n");
 	test5();
 
