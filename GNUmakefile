@@ -15,7 +15,7 @@ leaks:
 	@echo
 
 norm :
-	norminette get_next_line.c
+	norminette get_next_line.c get_next_line.h get_next_line_utils.c
 
 clean :
 	$(RM) a.out
