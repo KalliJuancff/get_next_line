@@ -6,19 +6,19 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:37 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/12 18:57:09 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:19:48 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-#ifndef BUFFER_SIZE
-# define BUFFER_SIZE 5
-#endif
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 5
+# endif
 
-#include <stdlib.h>	// malloc, free
-#include <unistd.h>	// read, size_t, ssize_t
+# include <stdlib.h>	// malloc, free
+# include <unistd.h>	// read, size_t, ssize_t
 
 char	*ft_strchr(const char *s, int c);
 void	*ft_bzero(void *s, size_t n);

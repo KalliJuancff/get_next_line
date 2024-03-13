@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:25 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/13 10:36:30 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/13 12:21:56 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ char	*ft_strchr(const char *s, int c)
 	}
 	return ((char *) s);
 }
-
 
 void	*ft_bzero(void *s, size_t n)
 {
@@ -53,7 +52,6 @@ void	*ft_calloc(size_t count, size_t size)
 	ft_bzero(result, num_bytes);
 	return (result);
 }
-
 
 size_t	ft_strlen(const char *s)
 {
@@ -85,7 +83,6 @@ char	*ft_strdup(const char *s1)
 	return (result);
 }
 
-
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
 	size_t	i;
@@ -113,7 +110,6 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	dstlong = 0;
 	while (dst[dstlong] != '\0' && dstlong < dstsize)
 		dstlong++;
-
 	if (dstlong == dstsize)
 		return (dstlong + ft_strlen(src));
 	return (dstlong + ft_strlcpy(dst + dstlong, src, dstsize - dstlong));
