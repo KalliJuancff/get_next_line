@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/13 17:23:27 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/13 20:22:36 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,32 +19,22 @@ char	*get_next_line(int fd)
 	char		*pending;
 	char		*temp;
 
-	pending = NULL;
 	if (buffer == NULL)
 	{
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (buffer == NULL)
 			return (NULL);
 	}
-	while (1)
+	pending = NULL;
+	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) != -1)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[bytes_read] = '\0';
-		if (bytes_read == -1)
-		{
-			if (pending != NULL)
-				free(pending);
-			free(buffer);
-			return (NULL);
-		}
 		if (bytes_read == 0)
 		{
 			if (pending == NULL)
 				return (NULL);
 			else
-			{
 				return (pending);
-			}
 		}
 		if (bytes_read < BUFFER_SIZE)
 			if (pending == NULL)
@@ -65,4 +55,8 @@ char	*get_next_line(int fd)
 				pending = temp;
 			}
 	}
+	if (pending != NULL)
+		free(pending);
+	free(buffer);
+	return (NULL);
 }
