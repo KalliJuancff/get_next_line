@@ -44,8 +44,12 @@ void test1()
 	// NOTA:
 	// Teóricamente, tendría que acabar llamando a la función 'free' para cada una de las líneas válidas obtenidas,
 	// pero no lo hago y 'leaks' tampoco se queja...
-	assertEqualString(get_next_line(STDIN_FILENO), "12345");
-	assertEqualString(get_next_line(STDIN_FILENO), NULL);
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
 
 	// close(fd);
 }

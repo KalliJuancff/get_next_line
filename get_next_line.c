@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/13 11:13:48 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/13 11:31:08 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,5 @@
 char	*get_next_line(int fd)
 {
 	fd++;
-	return ("");
+	return (ft_strdup(""));
 }
