@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/15 19:20:19 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/15 19:50:47 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,17 @@ ssize_t	read_putting_null_char(int fildes, void *buf, size_t nbyte)
 	}
 
 	return (result);
+}
+
+char	*join_free_and_reset(char *s1, char **s2)
+{
+	char	*temp;
+
+	temp = ft_strjoin(s1, *s2);
+	free(s1);
+	free(*s2);
+	*s2 = NULL;
+	return (temp);
 }
 
 char	*get_next_line(int fd)
@@ -50,11 +61,12 @@ char	*get_next_line(int fd)
 
 	if (remainder != NULL)
 	{
-		temp = ft_strjoin(remainder, buffer);
-		free(remainder);
-		free(buffer);
-		buffer = NULL;
-		return(temp);
+		return (join_free_and_reset(remainder, &buffer));
+		// temp = ft_strjoin(remainder, buffer);
+		// free(remainder);
+		// free(buffer);
+		// buffer = NULL;
+		// return (temp);
 	}
 	else
 	{
