@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/15 19:12:45 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/15 19:20:19 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*get_next_line(int fd)
 		remainder = ft_strdup(buffer);
 	}
 
-	if (bytes_read <= 0)
+	if (bytes_read == -1)
 		return (NULL);
 
 	if (remainder != NULL)
@@ -55,6 +55,11 @@ char	*get_next_line(int fd)
 		free(buffer);
 		buffer = NULL;
 		return(temp);
+	}
+	else
+	{
+		if (bytes_read == 0)
+			return (NULL);
 	}
 
 	// Al ser buffer una variable estática, tenemos que "resetearla" o tendremos conflictos

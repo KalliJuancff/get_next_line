@@ -157,10 +157,10 @@ int main()
 	printf(TITULO("TEST2a:")"\n");
 	test2a();
 
-/*
 	printf(TITULO("TEST2b:")"\n");
 	test2b();
 
+/*
 	printf(TITULO("TEST3:")"\n");
 	test3();
 
