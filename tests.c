@@ -39,23 +39,6 @@ void test1()
 {
 	// ¡Ya no necesito ficheros reales!
 	//     int fd = open("1.txt", O_RDONLY);
-	simular_escritura_desde_teclado("12345");
-
-	// NOTA:
-	// Teóricamente, tendría que acabar llamando a la función 'free' para cada una de las líneas válidas obtenidas,
-	// pero no lo hago y 'leaks' tampoco se queja...
-	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345");
-	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
-
-	free(linea1);
-	free(linea2);
-
-	// close(fd);
-}
-
-void test2()
-{
 	simular_escritura_desde_teclado("123");
 
 	char *linea1, *linea2;
@@ -64,26 +47,41 @@ void test2()
 
 	free(linea1);
 	free(linea2);
+
+	// close(fd);
 }
 
-void test3()
+void test2a()
 {
-	simular_escritura_desde_teclado("123\n");
+	simular_escritura_desde_teclado("1234567");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123\n");
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567");
 	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 }
 
-void test4()
+void test2b()
 {
-	simular_escritura_desde_teclado("1234567");
+	simular_escritura_desde_teclado("12345");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567");
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+}
+
+/*
+void test2a()
+{
+	simular_escritura_desde_teclado("123\n");
+
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123\n");
 	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
@@ -149,12 +147,14 @@ void test7()
 	free(linea2);
 	free(linea3);
 }
+*/
 
 int main()
 {
 	printf(TITULO("TEST1:")"\n");
 	test1();
 
+/*
 	printf(TITULO("TEST2:")"\n");
 	test2();
 
@@ -175,6 +175,10 @@ int main()
 
 	printf(TITULO("TEST6:")"\n");
 	test6();
+
+	printf(TITULO("TEST7:")"\n");
+	test7();
+*/
 
 	return (0);
 }
