@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/15 19:50:47 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/15 20:39:44 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ ssize_t	read_putting_null_char(int fildes, void *buf, size_t nbyte)
 	return (result);
 }
 
-char	*join_free_and_reset(char *s1, char **s2)
+char	*join_strings_free_them_and_reset_last(char *s1, char **s2)
 {
 	char	*temp;
 
@@ -47,27 +47,44 @@ char	*get_next_line(int fd)
 
 	if (buffer == NULL)
 		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-	// else
-	//	ft_bzero(buffer, BUFFER_SIZE + 1);
 
-	remainder = NULL;
-	while ((bytes_read = read_putting_null_char(fd, buffer, BUFFER_SIZE)) == BUFFER_SIZE)
+	if (ft_strlen(buffer) == 0)
+		remainder = NULL;
+	else
 	{
 		remainder = ft_strdup(buffer);
+		buffer -= (BUFFER_SIZE - ft_strlen(buffer));
+		ft_bzero(buffer, BUFFER_SIZE + 1);
+	}
+
+	while ((bytes_read = read_putting_null_char(fd, buffer, BUFFER_SIZE)) == BUFFER_SIZE)
+	{
+		if (ft_strchr(buffer, '\n') != NULL)
+		{
+			int num_cars = ft_strchr(buffer, '\n') - buffer + 1 + 1;
+			temp = ft_calloc(num_cars, sizeof(char));
+			ft_strlcpy(temp, buffer, num_cars);
+			buffer = ft_strchr(buffer, '\n') + 1;
+			return (temp);
+		}
+		else
+		{
+			if (remainder == NULL)
+				remainder = ft_strdup(buffer);
+			else
+			{
+				temp = ft_strjoin(remainder, buffer);
+				free(remainder);
+				remainder = temp;
+			}
+		}
 	}
 
 	if (bytes_read == -1)
 		return (NULL);
 
 	if (remainder != NULL)
-	{
-		return (join_free_and_reset(remainder, &buffer));
-		// temp = ft_strjoin(remainder, buffer);
-		// free(remainder);
-		// free(buffer);
-		// buffer = NULL;
-		// return (temp);
-	}
+		return (join_strings_free_them_and_reset_last(remainder, &buffer));
 	else
 	{
 		if (bytes_read == 0)
