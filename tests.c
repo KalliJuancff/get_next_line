@@ -158,6 +158,9 @@ int main()
 	test2a();
 
 /*
+	printf(TITULO("TEST2b:")"\n");
+	test2b();
+
 	printf(TITULO("TEST3:")"\n");
 	test3();
 

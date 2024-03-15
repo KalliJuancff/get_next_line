@@ -6,11 +6,26 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/15 18:45:34 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/15 19:12:45 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+ssize_t	read_putting_null_char(int fildes, void *buf, size_t nbyte)
+{
+	char	*buf_char;
+	ssize_t	result;
+
+	buf_char = (char *) buf;
+	result = read(fildes, buf, nbyte);
+	if (result != -1)
+	{
+		buf_char[result] = '\0';
+	}
+
+	return (result);
+}
 
 char	*get_next_line(int fd)
 {
@@ -25,12 +40,10 @@ char	*get_next_line(int fd)
 	//	ft_bzero(buffer, BUFFER_SIZE + 1);
 
 	remainder = NULL;
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) == BUFFER_SIZE)
+	while ((bytes_read = read_putting_null_char(fd, buffer, BUFFER_SIZE)) == BUFFER_SIZE)
 	{
-		buffer[bytes_read] = '\0';
 		remainder = ft_strdup(buffer);
 	}
-	buffer[bytes_read] = '\0';
 
 	if (bytes_read <= 0)
 		return (NULL);
