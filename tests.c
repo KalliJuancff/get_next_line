@@ -35,14 +35,14 @@ void simular_escritura_desde_teclado(char *texto)
 	free (dup_texto);
 }
 
-void test1()
+void test1a()
 {
 	// ¡Ya no necesito ficheros reales!
 	//     int fd = open("1.txt", O_RDONLY);
-	simular_escritura_desde_teclado("123");
+	simular_escritura_desde_teclado("12345");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123");
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345");
 	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
@@ -51,6 +51,7 @@ void test1()
 	// close(fd);
 }
 
+/*
 void test2a()
 {
 	simular_escritura_desde_teclado("1234567");
@@ -133,7 +134,6 @@ void test3d()
 	free(linea4);
 }
 
-/*
 void test2a()
 {
 	simular_escritura_desde_teclado("123\n");
@@ -195,9 +195,10 @@ void test6()
 
 int main()
 {
-	printf(TITULO("TEST1:")"\n");
-	test1();
+	printf(TITULO("TEST1a:")"\n");
+	test1a();
 
+/*
 	printf(TITULO("TEST2a:")"\n");
 	test2a();
 
@@ -216,7 +217,6 @@ int main()
 	printf(TITULO("TEST3d:")"\n");
 	test3d();
 
-/*
 	printf(TITULO("TEST4:")"\n");
 	test4();
 
