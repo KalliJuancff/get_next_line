@@ -155,6 +155,47 @@ void test2c()
 	free(linea3);
 }
 
+void test2d()
+{
+	simular_escritura_desde_teclado("12\n4567");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
+void test2e()
+{
+	simular_escritura_desde_teclado("12\n456789012345");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789012345");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
+void test2f()
+{
+	simular_escritura_desde_teclado("12\n4567890123");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567890123");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
 /*
 void test3b()
 {
@@ -170,19 +211,6 @@ void test3b()
 	free(linea3);
 }
 
-void test3c()
-{
-	simular_escritura_desde_teclado("12\n45678901234");
-
-	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
-	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45678901234");
-	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
-
-	free(linea1);
-	free(linea2);
-	free(linea3);
-}
 
 void test3d()
 {
@@ -206,30 +234,6 @@ void test2a()
 
 	char *linea1, *linea2;
 	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123\n");
-	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
-
-	free(linea1);
-	free(linea2);
-}
-
-void test4b()
-{
-	simular_escritura_desde_teclado("1234567890123");
-
-	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567890123");
-	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
-
-	free(linea1);
-	free(linea2);
-}
-
-void test5b()
-{
-	simular_escritura_desde_teclado("123456789012345");
-
-	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012345");
 	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
@@ -277,37 +281,14 @@ int main()
 	printf(TITULO("TEST2c:")"\n");
 	test2c();
 
-/*
-	printf(TITULO("TEST3a:")"\n");
-	test3a();
+	printf(TITULO("TEST2d:")"\n");
+	test2d();
 
-	printf(TITULO("TEST3b:")"\n");
-	test3b();
+	printf(TITULO("TEST2e:")"\n");
+	test2e();
 
-	printf(TITULO("TEST3c:")"\n");
-	test3c();
-
-	printf(TITULO("TEST3d:")"\n");
-	test3d();
-
-	printf(TITULO("TEST4:")"\n");
-	test4();
-
-	printf(TITULO("TEST4b:")"\n");
-	test4b();
-
-	printf(TITULO("TEST5:")"\n");
-	test5();
-
-	printf(TITULO("TEST5b:")"\n");
-	test5b();
-
-	printf(TITULO("TEST6:")"\n");
-	test6();
-
-	printf(TITULO("TEST7:")"\n");
-	test7();
-*/
+	printf(TITULO("TEST2f:")"\n");
+	test2f();
 
 	return (0);
 }
