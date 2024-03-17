@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/17 14:05:42 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/17 15:13:32 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*get_next_line(int fd)
 	if (buffer != NULL)
 	{
 		remainder = ft_strdup(buffer);
+		buffer -= (BUFFER_SIZE - ft_strlen(buffer));
 		free_and_reset_buffer(&buffer);
 	}
 	buffer = ft_calloc (BUFFER_SIZE + 1, sizeof(char));
