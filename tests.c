@@ -141,6 +141,20 @@ void test2b()
 	free(linea3);
 }
 
+void test2c()
+{
+	simular_escritura_desde_teclado("12\n4567890");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567890");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
 /*
 void test3b()
 {
@@ -260,10 +274,10 @@ int main()
 	printf(TITULO("TEST2b:")"\n");
 	test2b();
 
-/*
-	printf(TITULO("TEST2b:")"\n");
-	test2b();
+	printf(TITULO("TEST2c:")"\n");
+	test2c();
 
+/*
 	printf(TITULO("TEST3a:")"\n");
 	test3a();
 
