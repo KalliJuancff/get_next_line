@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/17 20:41:11 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/17 21:46:47 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*create_substr(char *str, int count, char *prefix)
 	if (prefix == NULL)
 		prefix = "";
 	len_prefix = ft_strlen(prefix);
-	result = ft_calloc(len_prefix + count + 1, sizeof(char));
+	result = malloc((len_prefix + count + 1) * sizeof(char));
 	ft_strlcpy(result, prefix, len_prefix + 1);
 	ft_strlcpy(result + len_prefix, str, count + 1);
 	return (result);
@@ -72,7 +72,7 @@ char	*get_next_line(int fd)
 		remainder = ft_strdup(buffer);
 		free_and_reset_buffer(&buffer);
 	}
-	buffer = ft_calloc (BUFFER_SIZE + 1, sizeof(char));
+	buffer = malloc ((BUFFER_SIZE + 1) * sizeof(char));
 	end_of_file = 0;
 	while (end_of_file == 0)
 	{
