@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:25 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/17 21:21:24 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/17 21:35:37 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,22 +89,6 @@ size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 	return (ft_strlen(src));
 }
 
-// Cuando la longitud del buffer es igual al tamaño especificado como parámetro,
-// el buffer de destino está lleno por lo que no podemos agregar más carácteres.
-// En ese caso, aunque no hemos hecho ninguna copia "real", tenemos que devolver
-// la longitud total si no hubiese restricciones de espacio
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
-{
-	size_t	dstlong;
-
-	dstlong = 0;
-	while (dst[dstlong] != '\0' && dstlong < dstsize)
-		dstlong++;
-	if (dstlong == dstsize)
-		return (dstlong + ft_strlen(src));
-	return (dstlong + ft_strlcpy(dst + dstlong, src, dstsize - dstlong));
-}
-
 char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*result;
@@ -119,6 +103,6 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	if (result == NULL)
 		return (NULL);
 	ft_strlcpy(result, s1, s1_len + 1);
-	ft_strlcat(result, s2, s1_len + s2_len + 1);
+	ft_strlcpy(result + s1_len, s2, s2_len + 1);
 	return (result);
 }
