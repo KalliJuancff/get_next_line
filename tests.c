@@ -271,6 +271,81 @@ void test3f()
 }
 
 
+void test4a()
+{
+	simular_escritura_desde_teclado("\n2345");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "2345");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
+void test4b()
+{
+	simular_escritura_desde_teclado("12\n");
+
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+}
+
+void test4c()
+{
+	simular_escritura_desde_teclado("123456789\n");
+
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+}
+
+void test4d()
+{
+	simular_escritura_desde_teclado("123456\n");
+
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+}
+
+void test4e()
+{
+	simular_escritura_desde_teclado("12345678901234\n");
+
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345678901234\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+}
+
+void test4f()
+{
+	simular_escritura_desde_teclado("123456789012\n");
+
+	char *linea1, *linea2;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+}
+
+
 /*
 void test3b()
 {
@@ -383,6 +458,27 @@ int main()
 
 	printf(TITULO("TEST3f:")"\n");
 	test3f();
+
+
+	printf(TITULO("TEST4a:")"\n");
+	test4a();
+
+/*
+	printf(TITULO("TEST4b:")"\n");
+	test3b();
+
+	printf(TITULO("TEST4c:")"\n");
+	test3c();
+
+	printf(TITULO("TEST4d:")"\n");
+	test3d();
+
+	printf(TITULO("TEST4e:")"\n");
+	test3e();
+
+	printf(TITULO("TEST4f:")"\n");
+	test3f();
+*/
 
 
 	return (0);
