@@ -35,6 +35,7 @@ void simular_escritura_desde_teclado(char *texto)
 	free (dup_texto);
 }
 
+
 void test1a()
 {
 	// ¡Ya no necesito ficheros reales!
@@ -111,8 +112,8 @@ void test1f()
 	free(linea2);
 }
 
-/*
-void test3a()
+
+void test2a()
 {
 	simular_escritura_desde_teclado("12\n45");
 
@@ -126,6 +127,7 @@ void test3a()
 	free(linea3);
 }
 
+/*
 void test3b()
 {
 	simular_escritura_desde_teclado("12\n4567");
@@ -237,10 +239,11 @@ int main()
 	printf(TITULO("TEST1f:")"\n");
 	test1f();
 
-/*
+
 	printf(TITULO("TEST2a:")"\n");
 	test2a();
 
+/*
 	printf(TITULO("TEST2b:")"\n");
 	test2b();
 
