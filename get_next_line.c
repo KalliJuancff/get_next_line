@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/17 19:51:14 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/17 20:41:11 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ char	*get_next_line(int fd)
 	end_of_file = 0;
 	while (end_of_file == 0)
 	{
-		if (end_of_file == 0)
-		{
-			bytes_read = read(fd, buffer, BUFFER_SIZE);
-			buffer[bytes_read] = '\0';
-		}
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		buffer[bytes_read] = '\0';
 		if (get_intro_pos(buffer) >= 0)
 		{
 			line = create_substr(buffer, get_intro_pos(buffer) + 1, remainder);
