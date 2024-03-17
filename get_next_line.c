@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/17 15:47:47 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/17 19:51:14 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,14 @@ char	*get_next_line(int fd)
 		{
 			line = create_substr(buffer, get_intro_pos(buffer) + 1, remainder);
 			free(remainder);
-			remainder = ft_strdup(buffer + get_intro_pos(buffer) + 1);
-			free_and_reset_buffer(&buffer);
-			buffer = remainder;
+			if (buffer[get_intro_pos(buffer) + 1] != '\0')
+			{
+				remainder = ft_strdup(buffer + get_intro_pos(buffer) + 1);
+				free_and_reset_buffer(&buffer);
+				buffer = remainder;
+			}
+			else
+				free_and_reset_buffer(&buffer);
 			return (line);
 		}
 		else
