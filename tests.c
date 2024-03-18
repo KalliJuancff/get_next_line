@@ -481,8 +481,7 @@ void test7f()
 }
 
 
-/*
-void test6()
+void test99()
 {
 	simular_escritura_desde_teclado("");
 
@@ -491,7 +490,7 @@ void test6()
 
 	free(linea1);
 }
-*/
+
 
 int main()
 {
@@ -595,6 +594,10 @@ int main()
 
 	printf(TITULO("TEST7f:")"\n");
 	test7f();
+
+
+	printf(TITULO("TEST99:")"\n");
+	test99();
 
 
 	return (0);
