@@ -61,7 +61,7 @@ void assertEqualString(char *actual, char *esperada)
 	char *dup_actual = duplicar_cadena_sin_intros(actual);
 	char *dup_esperada = duplicar_cadena_sin_intros(esperada);
 	if (error)
-		printf("%s: Se encontró el valor %s pero se esperaba %s.\n", ERRONEO("KO"), dup_actual, dup_esperada);
+		printf("%s: Se encontró el valor %s pero se esperaba %s.\a\n", ERRONEO("KO"), dup_actual, dup_esperada);
 	else
 		printf("%s: Se encontró el valor esperado %s.\n", CORRECTO("OK"), dup_esperada);
 	free(dup_actual);
