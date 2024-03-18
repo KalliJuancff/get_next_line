@@ -19,7 +19,7 @@ int obtener_numero_intros(char *texto)
 char *duplicar_cadena_sin_intros(char *texto)
 {
 	if (texto == NULL)
-		return (ft_strdup("(NULL)"));
+		return (ft_strjoin("(NULL)", ""));
 
 	int i = 0;
 	char *retorno = malloc(ft_strlen(texto) + obtener_numero_intros(texto) + 2 + 1 * sizeof(char));
