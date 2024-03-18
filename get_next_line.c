@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/18 10:01:39 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/18 10:35:22 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ void	add_buffer_to_remainder(char **rem, char *buf)
 {
 	char	*temp;
 
-	if (*rem == NULL && ft_strlen(buf) > 0)
+	if (ft_strlen(buf) == 0)
+		return ;
+	if (*rem == NULL)
 		*rem = ft_strdup(buf);
 	else
 	{
-		if (ft_strlen(buf) == 0)
-			return ;
 		temp = ft_strjoin(*rem, buf);
 		free (*rem);
 		*rem = temp;
@@ -58,15 +58,15 @@ char	*create_substr(char *str, int count, char *prefix)
 	return (result);
 }
 
-char	*create_line(char **buf, char **rem)
+char	*create_line_with_remainder_and_buffer(char **buf, char **rem)
 {
 	char	*line;
-	char	*buffer;
+	char	*temp;
 
 	line = create_substr(*buf, get_intro_pos(*buf) + 1, *rem);
 	free(*rem);
-	buffer = *buf;
-	if (buffer[get_intro_pos(*buf) + 1] == '\0')
+	temp = *buf;
+	if (temp[get_intro_pos(*buf) + 1] == '\0')
 		free_and_reset_buffer(buf);
 	else
 	{
@@ -99,7 +99,7 @@ char	*get_next_line(int fd)
 		if (bytes_read < BUFFER_SIZE)
 			end_of_file = 1;
 		if (get_intro_pos(buffer) >= 0)
-			return (create_line(&buffer, &remainder));
+			return (create_line_with_remainder_and_buffer(&buffer, &remainder));
 		else
 			add_buffer_to_remainder(&remainder, buffer);
 	}
