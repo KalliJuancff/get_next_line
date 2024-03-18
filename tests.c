@@ -610,11 +610,10 @@ void test99()
 
 int main()
 {
-	printf(TITULO("TEST 0a (PACO):")"\n");
+	printf(TITULO("TEST0a (Francinette):")"\n");
 	test0a();
 
 
-/*
 	printf(TITULO("TEST1a:")"\n");
 	test1a();
 
@@ -742,7 +741,6 @@ int main()
 
 	printf(TITULO("TEST99:")"\n");
 	test99();
-*/
 
 
 	return (0);
