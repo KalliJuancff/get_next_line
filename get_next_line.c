@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/18 09:34:23 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/18 10:01:39 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,29 @@ char	*create_substr(char *str, int count, char *prefix)
 	return (result);
 }
 
+char	*create_line(char **buf, char **rem)
+{
+	char	*line;
+	char	*buffer;
+
+	line = create_substr(*buf, get_intro_pos(*buf) + 1, *rem);
+	free(*rem);
+	buffer = *buf;
+	if (buffer[get_intro_pos(*buf) + 1] == '\0')
+		free_and_reset_buffer(buf);
+	else
+	{
+		*rem = ft_strdup(*buf + get_intro_pos(*buf) + 1);
+		free_and_reset_buffer(buf);
+		*buf = *rem;
+	}
+	return (line);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*buffer = NULL;
 	char		*remainder;
-	char		*line;
 	int			end_of_file;
 	ssize_t		bytes_read;
 
@@ -81,19 +99,7 @@ char	*get_next_line(int fd)
 		if (bytes_read < BUFFER_SIZE)
 			end_of_file = 1;
 		if (get_intro_pos(buffer) >= 0)
-		{
-			line = create_substr(buffer, get_intro_pos(buffer) + 1, remainder);
-			free(remainder);
-			if (buffer[get_intro_pos(buffer) + 1] == '\0')
-				free_and_reset_buffer(&buffer);
-			else
-			{
-				remainder = ft_strdup(buffer + get_intro_pos(buffer) + 1);
-				free_and_reset_buffer(&buffer);
-				buffer = remainder;
-			}
-			return (line);
-		}
+			return (create_line(&buffer, &remainder));
 		else
 			add_buffer_to_remainder(&remainder, buffer);
 	}
