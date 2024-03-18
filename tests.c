@@ -443,7 +443,6 @@ void test7d()
 	free(linea2);
 	free(linea3);
 	free(linea4);
-
 }
 
 void test7e()
@@ -460,7 +459,6 @@ void test7e()
 	free(linea2);
 	free(linea3);
 	free(linea4);
-
 }
 
 void test7f()
@@ -477,7 +475,63 @@ void test7f()
 	free(linea2);
 	free(linea3);
 	free(linea4);
+}
 
+
+void test8c()
+{
+	simular_escritura_desde_teclado("12\n456789\n");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
+void test8d()
+{
+	simular_escritura_desde_teclado("12\n4567\n");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
+void test8e()
+{
+	simular_escritura_desde_teclado("12\n45678901234\n");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45678901234\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+}
+
+void test8f()
+{
+	simular_escritura_desde_teclado("12\n456789012\n");
+
+	char *linea1, *linea2, *linea3;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789012\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
 }
 
 
@@ -594,6 +648,19 @@ int main()
 
 	printf(TITULO("TEST7f:")"\n");
 	test7f();
+
+
+	printf(TITULO("TEST8c:")"\n");
+	test8c();
+
+	printf(TITULO("TEST8d:")"\n");
+	test8d();
+
+	printf(TITULO("TEST8e:")"\n");
+	test8e();
+
+	printf(TITULO("TEST8f:")"\n");
+	test8f();
 
 
 	printf(TITULO("TEST99:")"\n");
