@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:37 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/13 12:19:48 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/18 07:47:43 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,9 @@
 # include <unistd.h>	// read, size_t, ssize_t
 
 char	*ft_strchr(const char *s, int c);
-void	*ft_bzero(void *s, size_t n);
-void	*ft_calloc(size_t count, size_t size);
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*get_next_line(int fd);
 
