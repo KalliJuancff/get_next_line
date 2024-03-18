@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:25 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/17 21:49:05 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/18 16:41:00 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,23 +36,19 @@ size_t	ft_strlen(const char *s)
 	return (i);
 }
 
-char	*ft_strdup(const char *s1)
+void	*ft_calloc(size_t count, size_t size)
 {
-	char	*result;
-	size_t	len;
-	size_t	i;
-
-	len = ft_strlen(s1);
-	result = malloc(len + 1);
-	if (!result)
+	unsigned char	*result;
+	size_t			num_bytes;
+	num_bytes = count * size;
+	result = malloc(num_bytes);
+	if (result == NULL)
 		return (NULL);
-	i = 0;
-	while (i < len)
+	while (num_bytes > 0)
 	{
-		result[i] = s1[i];
-		i++;
+		result[num_bytes - 1]  = '\0';
+		num_bytes--;
 	}
-	result[i] = '\0';
 	return (result);
 }
 
