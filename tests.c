@@ -36,6 +36,25 @@ void simular_escritura_desde_teclado(char *texto)
 }
 
 
+void test0a()
+{
+	simular_escritura_desde_teclado("\n\n\n\n\n");
+
+	char *linea1, *linea2, *linea3, *linea4, *linea5;
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea5 = get_next_line(STDIN_FILENO)), "\n");
+
+	free(linea1);
+	free(linea2);
+	free(linea3);
+	free(linea4);
+	free(linea5);
+}
+
+
 void test1a()
 {
 	// ¡Ya no necesito ficheros reales!
@@ -591,6 +610,11 @@ void test99()
 
 int main()
 {
+	printf(TITULO("TEST 0a (PACO):")"\n");
+	test0a();
+
+
+/*
 	printf(TITULO("TEST1a:")"\n");
 	test1a();
 
@@ -718,6 +742,7 @@ int main()
 
 	printf(TITULO("TEST99:")"\n");
 	test99();
+*/
 
 
 	return (0);
