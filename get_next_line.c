@@ -6,12 +6,13 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/19 17:05:26 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:01:07 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+// TODO: si se mantiene el comportamiento de machacar la cadena apuntada por "read_buf", renombrar la función para que sea evidente
 char	*merge_pending_and_read_buffer(char **pend_buf, char *read_buf)
 {
 	char	*result;
@@ -21,6 +22,7 @@ char	*merge_pending_and_read_buffer(char **pend_buf, char *read_buf)
 		return (NULL);
 	free(*pend_buf);
 	*pend_buf = result;
+	*read_buf = '\0';
 	return (result);
 }
 
@@ -95,10 +97,13 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 				if(!merge_pending_and_read_buffer(pend_buf, read_buf))
 					return (free(read_buf), NULL);
 			}
+			if (bytes_read < BUFFER_SIZE)
+				free(read_buf);
 		}
 	}
 	if (**pend_buf == '\0')
-		return(free(read_buf), NULL);
+		return (NULL);
+	read_buf = ft_strjoin(*pend_buf, "");
 	free(*pend_buf);
 	*pend_buf = NULL;
 	return (read_buf);
