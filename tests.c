@@ -40,18 +40,20 @@ void test0a()
 {
 	simular_escritura_desde_teclado("\n\n\n\n\n");
 
-	char *linea1, *linea2, *linea3, *linea4, *linea5;
+	char *linea1, *linea2, *linea3, *linea4, *linea5, *linea6;
 	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
 	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "\n");
 	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "\n");
 	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), "\n");
 	assertEqualString((linea5 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea6 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
 	free(linea4);
 	free(linea5);
+	free(linea6);
 }
 
 
