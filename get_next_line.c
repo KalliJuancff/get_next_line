@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/19 20:47:27 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/19 21:02:56 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 					return (NULL);
 			}
 			bytes_read = read(fd, read_buf, BUFFER_SIZE);
-			read_buf[bytes_read] = '\0';
 			if (bytes_read == -1)
 				return (free(read_buf), NULL);
+			read_buf[bytes_read] = '\0';
 			if (bytes_read > 0)
 			{
 				if(!merge_pending_and_read_buffer(pend_buf, read_buf))
