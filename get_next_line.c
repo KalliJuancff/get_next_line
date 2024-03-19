@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/19 18:01:07 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:37:10 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 {
 	char	*read_buf;
 	int	bytes_read;
+	int	finish;
 	char	*intro_pos;
 
 	read_buf = NULL;
-	bytes_read = BUFFER_SIZE;
-	while (bytes_read == BUFFER_SIZE)
+	finish = 0;
+	while (finish == 0)
 	{
 		intro_pos = ft_strchr(*pend_buf, '\n');
 		if (intro_pos != NULL)
@@ -97,12 +98,13 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 				if(!merge_pending_and_read_buffer(pend_buf, read_buf))
 					return (free(read_buf), NULL);
 			}
-			if (bytes_read < BUFFER_SIZE)
-				free(read_buf);
 		}
+		finish = (bytes_read < BUFFER_SIZE && ft_strchr(*pend_buf, '\n') == NULL);
 	}
+	free(read_buf);
 	if (**pend_buf == '\0')
 		return (NULL);
+	// TODO: si finalmente persiste el 'ft_strjoin' con todos los tests pasando (míos y de Paco), sustituirlo por 'ft_strdup' y cambiarlo 'ft_calloc' en 'get_next_line_utils.c'
 	read_buf = ft_strjoin(*pend_buf, "");
 	free(*pend_buf);
 	*pend_buf = NULL;
