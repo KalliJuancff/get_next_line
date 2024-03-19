@@ -6,116 +6,123 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/18 19:36:34 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/19 17:05:26 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*join_buffers(char **buffer, char *buffer2, int bytes)
+char	*merge_pending_and_read_buffer(char **pend_buf, char *read_buf)
 {
 	char	*result;
 
-	buffer2[bytes] = '\0';
-	result = ft_strjoin(*buffer, buffer2);
+	result = ft_strjoin(*pend_buf, read_buf);
 	if (result == NULL)
 		return (NULL);
-	free(*buffer);
-	*buffer = result;
+	free(*pend_buf);
+	*pend_buf = result;
 	return (result);
 }
 
-char	*remove_from_buffer(char **buf, int count)
+char	*extract_next_line_from_pending_buffer(char **pend_buf, int len_line)
 {
 	char	*result;
-	int		len;
+	int	len_new_pend_buf;
+	char	*new_pend_buf;
 
-	len = ft_strlen(*buf);
-	result = ft_calloc(len - count + 1, sizeof(char));
+	result = malloc((len_line + 1) * sizeof(char));
 	if (result == NULL)
 		return (NULL);
-	ft_strlcpy(result, *buf + count, len - count + 1);
+	ft_strlcpy(result, *pend_buf, len_line + 1);
+	len_new_pend_buf = ft_strlen(*pend_buf) - len_line;
+	new_pend_buf = malloc((len_new_pend_buf + 1) * sizeof(char));
+	if (new_pend_buf == NULL)
+		return (free(result), NULL);
+	ft_strlcpy(new_pend_buf, *pend_buf + len_line, len_new_pend_buf + 1);
+	free(*pend_buf);
+	*pend_buf = new_pend_buf;
+	return (result);
+}
+
+/*
+char	*remove_line_from_pending_buffer(char **buf, char *line)
+{
+	char	*result;
+	int	len_buf;
+	int	len_line;
+	int	long_new_buf;
+
+	len_buf = ft_strlen(buf);
+	len_line = ft_strlen(line);
+	long_new_buf = len_buf - len_line + 1;
+	result = malloc(long_new_buf * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	ft_strlcpy(result, buf + len_line, long_new_buf);
 	free(*buf);
 	*buf = result;
 	return (result);
 }
+*/
 
-char	*get_next_line_from_buffer(char **buf, char *intro_pos)
-{
-	char	*next_line;
-	int		len;
-
-	if (intro_pos == NULL)
-		len = ft_strlen(*buf);
-	else
-		len = intro_pos - *buf + 1;
-	next_line = ft_calloc(len + 1, sizeof(char));
-	if (next_line == NULL)
-		return (NULL);
-	ft_strlcpy(next_line, *buf, len + 1);
-	if ((*buf)[len] == '\0')
-	{
-		free(*buf);
-		*buf = NULL;
-	}
-	else
-	{
-		if (!remove_from_buffer(buf, len))
-		{
-			free(next_line);
-			return (NULL);
-		}
-	}
-	return (next_line);
-}
-
-char	*get_next_line_from_fd(char **buf, int fd)
+char	*get_next_line_from_fd(char **pend_buf, int fd)
 {
 	char	*read_buf;
-	char	*next_line;
-	int		bytes;
+	int	bytes_read;
+	char	*intro_pos;
 
-	next_line = ft_strchr(*buf, '\n');
-	if (next_line == NULL)
+	read_buf = NULL;
+	bytes_read = BUFFER_SIZE;
+	while (bytes_read == BUFFER_SIZE)
 	{
-		read_buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (read_buf == NULL)
-			return (NULL);
-		bytes = 1;
-		while (bytes > 0 && next_line == NULL)
+		intro_pos = ft_strchr(*pend_buf, '\n');
+		if (intro_pos != NULL)
+			return (extract_next_line_from_pending_buffer(pend_buf, intro_pos - *pend_buf + 1));
+		else
 		{
-			bytes = read(fd, read_buf, BUFFER_SIZE);
-			if (bytes < 0 || (bytes && !join_buffers(buf, read_buf, bytes)))
+			if (read_buf == NULL)
+			{
+				read_buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+				if (read_buf == NULL)
+					return (NULL);
+			}
+			bytes_read = read(fd, read_buf, BUFFER_SIZE);
+			read_buf[bytes_read] = '\0';
+			if (bytes_read == -1)
 				return (free(read_buf), NULL);
-			next_line = ft_strchr(*buf, '\n');
+			if (bytes_read > 0)
+			{
+				if(!merge_pending_and_read_buffer(pend_buf, read_buf))
+					return (free(read_buf), NULL);
+			}
 		}
-		free(read_buf);
-		if (bytes == 0 && **buf == '\0')
-			return (NULL);
-		return (get_next_line_from_buffer(buf, next_line));
 	}
-	else
-		return (get_next_line_from_buffer(buf, next_line));
+	if (**pend_buf == '\0')
+		return(free(read_buf), NULL);
+	free(*pend_buf);
+	*pend_buf = NULL;
+	return (read_buf);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer = NULL;
+	static char	*pend_buf = NULL;
 	char		*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	if (buffer == NULL)
+	if (pend_buf == NULL)
 	{
-		buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-		if (buffer == NULL)
+		// TODO: sustituir 'ft_calloc' por 'malloc' cuando pasen todos mis tests y los de Paco (¿y 'bzero' o pend_buf[0] = '\0'?). NOTA: Pensarlo primero; nada de 'ensayo-error'
+		pend_buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+		if (pend_buf == NULL)
 			return (NULL);
 	}
-	next_line = get_next_line_from_fd(&buffer, fd);
+	next_line = get_next_line_from_fd(&pend_buf, fd);
 	if (next_line == NULL)
 	{
-		free(buffer);
-		buffer = NULL;
+		free(pend_buf);
+		pend_buf = NULL;
 	}
 	return (next_line);
 }
