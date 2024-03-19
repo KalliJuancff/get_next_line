@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/19 18:37:10 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/19 20:47:27 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 	{
 		intro_pos = ft_strchr(*pend_buf, '\n');
 		if (intro_pos != NULL)
-			return (extract_next_line_from_pending_buffer(pend_buf, intro_pos - *pend_buf + 1));
+			return (free(read_buf), extract_next_line_from_pending_buffer(pend_buf, intro_pos - *pend_buf + 1));
 		else
 		{
 			if (read_buf == NULL)
