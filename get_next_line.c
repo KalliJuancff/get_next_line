@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/20 13:18:01 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:33:04 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*extract_line(char **pend_buf, int len_line)
 	return (result);
 }
 
-char	*fill_read_buffer(char **read_buf, int fd, int *bytes_read)
+char	*fill_read_buffer_from_fd(int fd, char **read_buf, int *bytes_read)
 {
 	if (*read_buf == NULL)
 	{
@@ -75,24 +75,7 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 			return (free(read_buf), extract_line(pend_buf, p - *pend_buf + 1));
 		else
 		{
-/*
-			if (read_buf == NULL)
-			{
-				read_buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
-				if (read_buf == NULL)
-					return (NULL);
-			}
-			bytes_rd = read(fd, read_buf, BUFFER_SIZE);
-			if (bytes_rd == -1)
-				return (free(read_buf), NULL);
-			read_buf[bytes_rd] = '\0';
-			if (bytes_rd > 0)
-			{
-				if (!merge_pending_and_read_buffer(pend_buf, read_buf))
-					return (free(read_buf), NULL);
-			}
-*/
-			if (!fill_read_buffer(&read_buf, fd, &bytes_rd))
+			if (!fill_read_buffer_from_fd(fd, &read_buf, &bytes_rd))
 				return (free(read_buf), NULL);
 			if (bytes_rd > 0)
 			{
