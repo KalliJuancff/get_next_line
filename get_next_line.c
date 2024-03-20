@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/20 10:05:29 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/20 10:28:05 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*merge_pending_and_read_buffer(char **pend_buf, char *read_buf)
 	return (result);
 }
 
-char	*extract_next_line_from_pending_buffer(char **pend_buf, int len_line)
+char	*extract_line(char **pend_buf, int len_line)
 {
 	char	*result;
-	int	len_new_pend_buf;
+	int		len_new_pend_buf;
 	char	*new_pend_buf;
 
 	result = malloc((len_line + 1) * sizeof(char));
@@ -68,17 +68,17 @@ char	*remove_line_from_pending_buffer(char **buf, char *line)
 char	*get_next_line_from_fd(char **pend_buf, int fd)
 {
 	char	*read_buf;
-	int	bytes_read;
-	int	finish;
-	char	*intro_pos;
+	int		bytes_read;
+	int		finish;
+	char	*p;
 
 	read_buf = NULL;
 	finish = 0;
 	while (finish == 0)
 	{
-		intro_pos = ft_strchr(*pend_buf, '\n');
-		if (intro_pos != NULL)
-			return (free(read_buf), extract_next_line_from_pending_buffer(pend_buf, intro_pos - *pend_buf + 1));
+		p = ft_strchr(*pend_buf, '\n');
+		if (p != NULL)
+			return (free(read_buf), extract_line(pend_buf, p - *pend_buf + 1));
 		else
 		{
 			if (read_buf == NULL)
