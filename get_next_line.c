@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/20 10:33:15 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/20 12:59:37 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ char	*extract_line(char **pend_buf, int len_line)
 	int		len_new_pend_buf;
 	char	*new_pend_buf;
 
-	result = malloc((len_line + 1) * sizeof(char));
+	result = ft_calloc(len_line + 1, sizeof(char));
 	if (result == NULL)
 		return (NULL);
 	ft_strlcpy(result, *pend_buf, len_line + 1);
 	len_new_pend_buf = ft_strlen(*pend_buf) - len_line;
-	new_pend_buf = malloc((len_new_pend_buf + 1) * sizeof(char));
+	new_pend_buf = ft_calloc(len_new_pend_buf + 1, sizeof(char));
 	if (new_pend_buf == NULL)
 		return (free(result), NULL);
 	ft_strlcpy(new_pend_buf, *pend_buf + len_line, len_new_pend_buf + 1);
@@ -43,27 +43,6 @@ char	*extract_line(char **pend_buf, int len_line)
 	*pend_buf = new_pend_buf;
 	return (result);
 }
-
-/*
-char	*remove_line_from_pending_buffer(char **buf, char *line)
-{
-	char	*result;
-	int	len_buf;
-	int	len_line;
-	int	long_new_buf;
-
-	len_buf = ft_strlen(buf);
-	len_line = ft_strlen(line);
-	long_new_buf = len_buf - len_line + 1;
-	result = malloc(long_new_buf * sizeof(char));
-	if (result == NULL)
-		return (NULL);
-	ft_strlcpy(result, buf + len_line, long_new_buf);
-	free(*buf);
-	*buf = result;
-	return (result);
-}
-*/
 
 char	*get_next_line_from_fd(char **pend_buf, int fd)
 {
@@ -83,7 +62,7 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 		{
 			if (read_buf == NULL)
 			{
-				read_buf = malloc((BUFFER_SIZE + 1) * sizeof(char));
+				read_buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 				if (read_buf == NULL)
 					return (NULL);
 			}
@@ -102,8 +81,7 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 	free(read_buf);
 	if (**pend_buf == '\0')
 		return (NULL);
-	// TODO: si finalmente persiste el 'ft_strjoin' con todos los tests pasando (míos y de Paco), sustituirlo por 'ft_strdup' y cambiarlo 'ft_calloc' en 'get_next_line_utils.c'
-	read_buf = ft_strjoin(*pend_buf, "");
+	read_buf = extract_line(pend_buf, ft_strlen(*pend_buf));
 	free(*pend_buf);
 	*pend_buf = NULL;
 	return (read_buf);
@@ -118,7 +96,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (pend_buf == NULL)
 	{
-		// TODO: sustituir 'ft_calloc' por 'malloc' cuando pasen todos mis tests y los de Paco (¿y 'bzero' o pend_buf[0] = '\0'?). NOTA: Pensarlo primero; nada de 'ensayo-error'
 		pend_buf = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 		if (pend_buf == NULL)
 			return (NULL);
