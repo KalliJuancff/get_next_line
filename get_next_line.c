@@ -6,7 +6,7 @@
 /*   By: jfidalgo <jfidalgo@student.42bar(...).com  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/08 17:10:06 by jfidalgo          #+#    #+#             */
-/*   Updated: 2024/03/20 13:33:04 by jfidalgo         ###   ########.fr       */
+/*   Updated: 2024/03/20 13:56:39 by jfidalgo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*extract_line(char **pend_buf, int len_line)
 	return (result);
 }
 
-char	*fill_read_buffer_from_fd(int fd, char **read_buf, int *bytes_read)
+char	*read_and_merge(int fd, char **read_buf, int *bytes, char **pend_buf)
 {
 	if (*read_buf == NULL)
 	{
@@ -52,16 +52,20 @@ char	*fill_read_buffer_from_fd(int fd, char **read_buf, int *bytes_read)
 		if (*read_buf == NULL)
 			return (NULL);
 	}
-	*bytes_read = read(fd, *read_buf, BUFFER_SIZE);
-	if (*bytes_read == -1)
+	*bytes = read(fd, *read_buf, BUFFER_SIZE);
+	if (*bytes == -1)
 		return (NULL);
-	(*read_buf)[*bytes_read] = '\0';
+	(*read_buf)[*bytes] = '\0';
+	if (*bytes > 0)
+		if (!merge_pending_and_read_buffer(pend_buf, *read_buf))
+			return (NULL);
 	return (*read_buf);
 }
 
 char	*get_next_line_from_fd(char **pend_buf, int fd)
 {
 	char	*read_buf;
+	char	*remainder;
 	int		bytes_rd;
 	int		finish;
 	char	*p;
@@ -73,25 +77,17 @@ char	*get_next_line_from_fd(char **pend_buf, int fd)
 		p = ft_strchr(*pend_buf, '\n');
 		if (p != NULL)
 			return (free(read_buf), extract_line(pend_buf, p - *pend_buf + 1));
-		else
-		{
-			if (!fill_read_buffer_from_fd(fd, &read_buf, &bytes_rd))
-				return (free(read_buf), NULL);
-			if (bytes_rd > 0)
-			{
-				if (!merge_pending_and_read_buffer(pend_buf, read_buf))
-					return (free(read_buf), NULL);
-			}
-		}
+		else if (!read_and_merge(fd, &read_buf, &bytes_rd, pend_buf))
+			return (free(read_buf), NULL);
 		finish = (bytes_rd < BUFFER_SIZE && ft_strchr(*pend_buf, '\n') == NULL);
 	}
 	free(read_buf);
 	if (**pend_buf == '\0')
 		return (NULL);
-	read_buf = extract_line(pend_buf, ft_strlen(*pend_buf));
+	remainder = extract_line(pend_buf, ft_strlen(*pend_buf));
 	free(*pend_buf);
 	*pend_buf = NULL;
-	return (read_buf);
+	return (remainder);
 }
 
 char	*get_next_line(int fd)
