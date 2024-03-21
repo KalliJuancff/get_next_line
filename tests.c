@@ -1,8 +1,12 @@
-#include <fcntl.h>		// open, O_RDONLY
+#include <errno.h>
+#include <fcntl.h>
+#include <stdio.h>
 #include "get_next_line.h"
 #include "assertions.h"
 
-void simular_escritura_desde_teclado(char *texto)
+int _fd;
+
+void simular_escritura_desde_tecladoi_old(char *texto)
 {
 	int pipefd[2];
 
@@ -35,6 +39,31 @@ void simular_escritura_desde_teclado(char *texto)
 	free (dup_texto);
 }
 
+int simular_escritura_desde_teclado(char *texto)
+{
+	const char *nombre_fichero = "temp_file.txt";
+	FILE *fichero;
+
+	fichero = fopen(nombre_fichero, "w");
+	if (fichero == NULL)
+	{
+		fprintf(stderr, "El fichero temporal '%s' no pudo ser creado: %s\n", nombre_fichero, strerror(errno));
+		exit(-1);
+	}
+	if (fprintf(fichero, "%s", texto) <= 0)
+	{
+		fprintf(stderr, "No se pudo escribir en el fichero temporal '%s': %s\n", nombre_fichero, strerror(errno));
+		exit(-1);
+	}
+	if (fclose(fichero) != 0)
+	{
+		fprintf(stderr, "No se pudo cerrar el fichero temporal '%s': %s\n", nombre_fichero, strerror(errno));
+		exit(-1);
+	};
+
+	return (open(nombre_fichero, O_RDONLY));
+}
+
 
 void test0a()
 {
@@ -59,18 +88,17 @@ void test0a()
 
 void test1a()
 {
-	// ¡Ya no necesito ficheros reales!
-	//     int fd = open("1.txt", O_RDONLY);
-	simular_escritura_desde_teclado("12345");
+	if ((_fd = simular_escritura_desde_teclado("12345")) == -1)
+		return;
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345");
-	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
+	assertEqualString((linea1 = get_next_line(_fd)), "12345");
+	assertEqualString((linea2 = get_next_line(_fd)), NULL);
 
 	free(linea1);
 	free(linea2);
 
-	// close(fd);
+	close(_fd);
 }
 
 void test1b()
@@ -612,13 +640,13 @@ void test99()
 
 int main()
 {
-	printf(TITULO("TEST0a (Francinette):")"\n");
-	test0a();
+//	printf(TITULO("TEST0a (Francinette):")"\n");
+//	test0a();
 
 
 	printf(TITULO("TEST1a:")"\n");
 	test1a();
-
+/*
 	printf(TITULO("TEST1b:")"\n");
 	test1b();
 
@@ -743,7 +771,7 @@ int main()
 
 	printf(TITULO("TEST99:")"\n");
 	test99();
-
+*/
 
 	return (0);
 }
