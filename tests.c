@@ -17,7 +17,7 @@ int crear_y_escribir_en_fichero_temporal(char *texto)
 		fprintf(stderr, "El fichero temporal '%s' no pudo ser creado: %s\n", _nombre_fichero, strerror(errno));
 		exit(-1);
 	}
-	if (fprintf(fichero, "%s", texto) <= 0)
+	if (fprintf(fichero, "%s", texto) < 0)
 	{
 		fprintf(stderr, "No se pudo escribir en el fichero temporal '%s': %s\n", _nombre_fichero, strerror(errno));
 		exit(-1);
