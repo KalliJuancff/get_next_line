@@ -8,7 +8,7 @@ int obtener_numero_intros(char *texto)
 
 	while (texto[i] != '\0')
 	{
-		if (*texto == '\n')
+		if (texto[i] == '\n')
 			retorno++;
 		i++;
 	}
@@ -22,7 +22,7 @@ char *duplicar_cadena_sin_intros(char *texto)
 		return (ft_strjoin("(NULL)", ""));
 
 	int i = 0;
-	char *retorno = malloc(ft_strlen(texto) + obtener_numero_intros(texto) + 2 + 1 * sizeof(char));
+	char *retorno = ft_calloc(ft_strlen(texto) + obtener_numero_intros(texto) + 2 + 1, sizeof(char));
 
 	retorno[i++] = '\"';
 	while (*texto != '\0')
