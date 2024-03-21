@@ -4,27 +4,27 @@
 #include "get_next_line.h"
 #include "assertions.h"
 
+const char *_nombre_fichero = "temp_file.txt";
 int _fd;
 
 int crear_y_escribir_en_fichero_temporal(char *texto)
 {
-	const char *nombre_fichero = "temp_file.txt";
 	FILE *fichero;
 
-	fichero = fopen(nombre_fichero, "w");
+	fichero = fopen(_nombre_fichero, "w");
 	if (fichero == NULL)
 	{
-		fprintf(stderr, "El fichero temporal '%s' no pudo ser creado: %s\n", nombre_fichero, strerror(errno));
+		fprintf(stderr, "El fichero temporal '%s' no pudo ser creado: %s\n", _nombre_fichero, strerror(errno));
 		exit(-1);
 	}
 	if (fprintf(fichero, "%s", texto) <= 0)
 	{
-		fprintf(stderr, "No se pudo escribir en el fichero temporal '%s': %s\n", nombre_fichero, strerror(errno));
+		fprintf(stderr, "No se pudo escribir en el fichero temporal '%s': %s\n", _nombre_fichero, strerror(errno));
 		exit(-1);
 	}
 	if (fclose(fichero) != 0)
 	{
-		fprintf(stderr, "No se pudo cerrar el fichero temporal '%s': %s\n", nombre_fichero, strerror(errno));
+		fprintf(stderr, "No se pudo cerrar el fichero temporal '%s': %s\n", _nombre_fichero, strerror(errno));
 		exit(-1);
 	};
 
@@ -34,7 +34,7 @@ int crear_y_escribir_en_fichero_temporal(char *texto)
 	printf("%s\n", dup_texto);
 	free(dup_texto);
 
-	return (open(nombre_fichero, O_RDONLY));
+	return (open(_nombre_fichero, O_RDONLY));
 }
 
 
@@ -57,6 +57,7 @@ void test0a()
 	free(linea5);
 	free(linea6);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -72,6 +73,7 @@ void test1a()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -86,6 +88,7 @@ void test1b()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -100,6 +103,7 @@ void test1c()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -114,6 +118,7 @@ void test1d()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -128,6 +133,7 @@ void test1e()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -142,6 +148,7 @@ void test1f()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -159,6 +166,7 @@ void test2a()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -175,6 +183,7 @@ void test2b()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -191,6 +200,7 @@ void test2c()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -207,6 +217,7 @@ void test2d()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -223,6 +234,7 @@ void test2e()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -239,6 +251,7 @@ void test2f()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -254,6 +267,7 @@ void test3a()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -268,6 +282,7 @@ void test3b()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -282,6 +297,7 @@ void test3c()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -296,6 +312,7 @@ void test3d()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -310,6 +327,7 @@ void test3e()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -324,6 +342,7 @@ void test3f()
 	free(linea1);
 	free(linea2);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -341,6 +360,7 @@ void test3g()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -357,6 +377,7 @@ void test3h()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -373,6 +394,7 @@ void test3i()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -390,6 +412,7 @@ void test4a()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -406,6 +429,7 @@ void test4b()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -422,6 +446,7 @@ void test4c()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -438,6 +463,7 @@ void test4d()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -454,6 +480,7 @@ void test4e()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -470,6 +497,7 @@ void test4f()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -487,6 +515,7 @@ void test5c()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -503,6 +532,7 @@ void test5d()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -519,6 +549,7 @@ void test5e()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -535,6 +566,7 @@ void test5f()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -554,6 +586,7 @@ void test7c()
 	free(linea3);
 	free(linea4);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -572,6 +605,7 @@ void test7d()
 	free(linea3);
 	free(linea4);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -590,6 +624,7 @@ void test7e()
 	free(linea3);
 	free(linea4);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -608,6 +643,7 @@ void test7f()
 	free(linea3);
 	free(linea4);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -625,6 +661,7 @@ void test8c()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -641,6 +678,7 @@ void test8d()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -657,6 +695,7 @@ void test8e()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -673,6 +712,7 @@ void test8f()
 	free(linea2);
 	free(linea3);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
@@ -686,6 +726,7 @@ void test99()
 
 	free(linea1);
 
+	unlink(_nombre_fichero);
 	close(_fd);
 }
 
