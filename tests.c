@@ -4,51 +4,50 @@
 #include "get_next_line.h"
 #include "assertions.h"
 
-const char *_nombre_fichero = "temp_file.txt";
-int _fd;
-
-int crear_y_escribir_en_fichero_temporal(char *texto)
+void simular_entrada_desde_teclado(char *texto)
 {
-	FILE *fichero;
+	int pipefd[2];
 
-	fichero = fopen(_nombre_fichero, "w");
-	if (fichero == NULL)
+	// Creamos un pipe
+	if (pipe(pipefd) == -1)
 	{
-		fprintf(stderr, "El fichero temporal '%s' no pudo ser creado: %s\n", _nombre_fichero, strerror(errno));
-		exit(-1);
+		perror("Error al ejecutar la función 'pipe'.\n");
+		exit (-1);
 	}
-	if (fprintf(fichero, "%s", texto) < 0)
-	{
-		fprintf(stderr, "No se pudo escribir en el fichero temporal '%s': %s\n", _nombre_fichero, strerror(errno));
-		exit(-1);
-	}
-	if (fclose(fichero) != 0)
-	{
-		fprintf(stderr, "No se pudo cerrar el fichero temporal '%s': %s\n", _nombre_fichero, strerror(errno));
-		exit(-1);
-	};
 
-	printf(TITULO("Contenido fichero: "));
+	int len = ft_strlen(texto);
+	// Escribimos en el extremo de lectura del pipe el texto que corresponda
+	write(pipefd[1], texto, len);
+
+	// Redirigimos la entrada estándar al extremo de lectura del pipe
+	if (dup2(pipefd[0], STDIN_FILENO) == -1)
+	{
+		perror ("Error al ejecutar la función 'dup2'.\n");
+		exit (-1);
+	}
+
+	// Cerramos el extremo de escritura del pipe ya que no lo necesitamos
+	close(pipefd[1]);
+
+	// Mostramos el texto que simulamos que se escribe desde el teclado
 	char *dup_texto;
-	dup_texto = duplicar_cadena_sin_intros(texto);
+		dup_texto = duplicar_cadena_sin_intros(texto);
+	printf(TITULO("Contenido fichero: "));
 	printf("%s\n", dup_texto);
-	free(dup_texto);
-
-	return (open(_nombre_fichero, O_RDONLY));
+	free (dup_texto);
 }
-
 
 void test0a()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n\n\n\n\n");
+	simular_entrada_desde_teclado("\n\n\n\n\n");
 
 	char *linea1, *linea2, *linea3, *linea4, *linea5, *linea6;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "\n");
-	assertEqualString((linea3 = get_next_line(_fd)), "\n");
-	assertEqualString((linea4 = get_next_line(_fd)), "\n");
-	assertEqualString((linea5 = get_next_line(_fd)), "\n");
-	assertEqualString((linea6 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea5 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea6 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
@@ -56,678 +55,555 @@ void test0a()
 	free(linea4);
 	free(linea5);
 	free(linea6);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test1a()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12345");
+	simular_entrada_desde_teclado("12345");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "12345");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test1b()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123");
+	simular_entrada_desde_teclado("123");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "123");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test1c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("1234567890");
+	simular_entrada_desde_teclado("1234567890");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "1234567890");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567890");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test1d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("1234567");
+	simular_entrada_desde_teclado("1234567");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "1234567");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test1e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456789012345");
+	simular_entrada_desde_teclado("123456789012345");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456789012345");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012345");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test1f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("1234567890123");
+	simular_entrada_desde_teclado("1234567890123");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "1234567890123");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567890123");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test2a()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n45");
+	simular_entrada_desde_teclado("12\n45");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "45");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test2b()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("1\n3");
+	simular_entrada_desde_teclado("1\n3");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "1\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "3");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "3");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test2c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n4567890");
+	simular_entrada_desde_teclado("12\n4567890");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "4567890");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567890");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test2d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n4567");
+	simular_entrada_desde_teclado("12\n4567");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "4567");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test2e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n456789012345");
+	simular_entrada_desde_teclado("12\n456789012345");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "456789012345");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789012345");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test2f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n4567890123");
+	simular_entrada_desde_teclado("12\n4567890123");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "4567890123");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567890123");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test3a()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("1234\n");
+	simular_entrada_desde_teclado("1234\n");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "1234\n");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3b()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n");
+	simular_entrada_desde_teclado("12\n");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456789\n");
+	simular_entrada_desde_teclado("123456789\n");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456789\n");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456\n");
+	simular_entrada_desde_teclado("123456\n");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456\n");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12345678901234\n");
+	simular_entrada_desde_teclado("12345678901234\n");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "12345678901234\n");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345678901234\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456789012\n");
+	simular_entrada_desde_teclado("123456789012\n");
 
 	char *linea1, *linea2;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456789012\n");
-	assertEqualString((linea2 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test3g()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456789012\n4");
+	simular_entrada_desde_teclado("123456789012\n4");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456789012\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "4");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3h()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456789012\n45");
+	simular_entrada_desde_teclado("123456789012\n45");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456789012\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "45");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test3i()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12345678901234\n1");
+	simular_entrada_desde_teclado("12345678901234\n1");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12345678901234\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "1");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345678901234\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "1");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test4a()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n2345");
+	simular_entrada_desde_teclado("\n2345");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "2345");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "2345");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test4b()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n23");
+	simular_entrada_desde_teclado("\n23");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "23");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "23");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test4c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n234567890");
+	simular_entrada_desde_teclado("\n234567890");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "234567890");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "234567890");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test4d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n234567");
+	simular_entrada_desde_teclado("\n234567");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "234567");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "234567");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test4e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n23456789012345");
+	simular_entrada_desde_teclado("\n23456789012345");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "23456789012345");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "23456789012345");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test4f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("\n234567890123");
+	simular_entrada_desde_teclado("\n234567890123");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "234567890123");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "234567890123");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test5c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("1234567\n90");
+	simular_entrada_desde_teclado("1234567\n90");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "1234567\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "90");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "1234567\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "90");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test5d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456\n8");
+	simular_entrada_desde_teclado("123456\n8");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "8");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "8");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test5e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("123456789012\n45");
+	simular_entrada_desde_teclado("123456789012\n45");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "123456789012\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "45");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "123456789012\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test5f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12345678901\n3");
+	simular_entrada_desde_teclado("12345678901\n3");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12345678901\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "3");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12345678901\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "3");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test7c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n4567\n90");
+	simular_entrada_desde_teclado("12\n4567\n90");
 
 	char *linea1, *linea2, *linea3, *linea4;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "4567\n");
-	assertEqualString((linea3 = get_next_line(_fd)), "90");
-	assertEqualString((linea4 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "90");
+	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
 	free(linea4);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test7d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n456\n8");
+	simular_entrada_desde_teclado("12\n456\n8");
 
 	char *linea1, *linea2, *linea3, *linea4;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "456\n");
-	assertEqualString((linea3 = get_next_line(_fd)), "8");
-	assertEqualString((linea4 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "8");
+	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
 	free(linea4);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test7e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n456789012\n45");
+	simular_entrada_desde_teclado("12\n456789012\n45");
 
 	char *linea1, *linea2, *linea3, *linea4;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "456789012\n");
-	assertEqualString((linea3 = get_next_line(_fd)), "45");
-	assertEqualString((linea4 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789012\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "45");
+	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
 	free(linea4);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test7f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n45678901\n3");
+	simular_entrada_desde_teclado("12\n45678901\n3");
 
 	char *linea1, *linea2, *linea3, *linea4;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "45678901\n");
-	assertEqualString((linea3 = get_next_line(_fd)), "3");
-	assertEqualString((linea4 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45678901\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), "3");
+	assertEqualString((linea4 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
 	free(linea4);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test8c()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n456789\n");
+	simular_entrada_desde_teclado("12\n456789\n");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "456789\n");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test8d()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n4567\n");
+	simular_entrada_desde_teclado("12\n4567\n");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "4567\n");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "4567\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test8e()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n45678901234\n");
+	simular_entrada_desde_teclado("12\n45678901234\n");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "45678901234\n");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "45678901234\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 void test8f()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("12\n456789012\n");
+	simular_entrada_desde_teclado("12\n456789012\n");
 
 	char *linea1, *linea2, *linea3;
-	assertEqualString((linea1 = get_next_line(_fd)), "12\n");
-	assertEqualString((linea2 = get_next_line(_fd)), "456789012\n");
-	assertEqualString((linea3 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), "12\n");
+	assertEqualString((linea2 = get_next_line(STDIN_FILENO)), "456789012\n");
+	assertEqualString((linea3 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
 	free(linea2);
 	free(linea3);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
 void test99()
 {
-	_fd = crear_y_escribir_en_fichero_temporal("");
+	simular_entrada_desde_teclado("");
 
 	char *linea1;
-	assertEqualString((linea1 = get_next_line(_fd)), NULL);
+	assertEqualString((linea1 = get_next_line(STDIN_FILENO)), NULL);
 
 	free(linea1);
-
-	unlink(_nombre_fichero);
-	close(_fd);
 }
 
 
