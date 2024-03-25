@@ -49,18 +49,22 @@ void test1()
 	int fd4 = crear_y_escribir_en_fichero_temporal(nombre_fichero4, "1\n3\n567\n");
 	int fd5 = crear_y_escribir_en_fichero_temporal(nombre_fichero5, "123456789012\n4567");
 
-	char *linea1, *linea2, *linea3, *linea4, *linea5, *linea6, *linea7, *linea8, *linea9, *linea10, *linea11;
+	char *linea1, *linea2, *linea3, *linea4, *linea5, *linea6, *linea7, *linea8, *linea9, *linea10, *linea11, *linea12, *linea13, *linea14, *linea15;
 	assertEqualString((linea1 = get_next_line(fd1)), "\n");
 	assertEqualString((linea2 = get_next_line(fd1)), "\n");
 	assertEqualString((linea3 = get_next_line(fd2)), "12345");
 	assertEqualString((linea4 = get_next_line(fd1)), "\n");
 	assertEqualString((linea5 = get_next_line(fd2)), NULL);
-	assertEqualString((linea6 = get_next_line(fd1)), NULL);
-	assertEqualString((linea7 = get_next_line(fd4)), "1\n");
-	assertEqualString((linea8 = get_next_line(fd5)), "123456789012\n");
-	assertEqualString((linea9 = get_next_line(fd4)), "3\n");
-	assertEqualString((linea10 = get_next_line(fd5)), "4567");
-	assertEqualString((linea11 = get_next_line(fd4)), "567\n");
+	assertEqualString((linea6 = get_next_line(fd3)), "123\n");
+	assertEqualString((linea7 = get_next_line(fd3)), NULL);
+	assertEqualString((linea8 = get_next_line(fd1)), NULL);
+	assertEqualString((linea9 = get_next_line(fd4)), "1\n");
+	assertEqualString((linea10 = get_next_line(fd5)), "123456789012\n");
+	assertEqualString((linea11 = get_next_line(fd4)), "3\n");
+	assertEqualString((linea12 = get_next_line(fd5)), "4567");
+	assertEqualString((linea13 = get_next_line(fd4)), "567\n");
+	assertEqualString((linea14 = get_next_line(fd5)), NULL);
+	assertEqualString((linea15 = get_next_line(fd4)), NULL);
 
 	free(linea1);
 	free(linea2);
@@ -73,6 +77,10 @@ void test1()
 	free(linea9);
 	free(linea10);
 	free(linea11);
+	free(linea12);
+	free(linea13);
+	free(linea14);
+	free(linea15);
 
 	unlink(nombre_fichero1);
 	unlink(nombre_fichero2);
