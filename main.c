@@ -1,7 +1,7 @@
 #include <fcntl.h>		// open, O_RDONLY
 #include <stdio.h>		// printf
 #include <string.h>		// strerror
-#include <sys/errno.h>		// errno
+#include <sys/errno.h>	// errno
 #include <unistd.h>		// close
 #include "get_next_line.h"
 
@@ -33,11 +33,13 @@ int main(int argc, char **argv)
 	char *next_line;
 	while ((next_line = get_next_line(fd)) != NULL)
 	{
-		printf("Línea %d: '%s'\n", num_lineas + 1, next_line);
+		printf("Línea %d: %s", num_lineas + 1, next_line);
+		if (strchr(next_line, '\n') == NULL)
+			printf("\n");
 		num_lineas++;
 		free(next_line);
 	}
-	printf("%d líneas procesadas.\n", num_lineas);
+	printf("%d línea(s) procesada(s).\n", num_lineas);
 
 	// Desmarcar para forzar un error en el [segundo] close:
 	//     close(fd);
